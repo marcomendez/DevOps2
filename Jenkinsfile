@@ -4,29 +4,26 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-              sh 'gradle clean Build'
                 echo 'Building..'
+				sh './gradlew clean build'
             }
         }
         stage('Test') {
             steps {
-                sh 'gradle clean check'
                 echo 'Testing..'
-
+				sh './gradlew clean check'
+            }
+        }
+		stage('Package') {
+            steps {
+                echo 'Packaging..'
+				sh './gradlew clean war'
             }
         }
         stage('CodeQuality') {
             steps {
-                echo 'Testing..'
-                 sh " clean"
-                     "-Dsonar.host.url=http://sonarqube:9000"
-            }
-        }
-        stage('package') {
-            steps {
-            sh 'gradle clean war'
-                echo 'Deploying....'
-
+                echo 'Code Quality....'
+				sh './gradlew sonarqube -Dsonar.host.url=http://sonarqube:9000'
             }
         }
     }
