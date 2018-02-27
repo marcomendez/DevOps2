@@ -10,11 +10,19 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
+
             }
         }
-        stage('Deploy') {
+        stage('CodeQuality') {
+            steps {
+                echo 'Testing..'
+-Dsonar.host.url=http://sonarqube:9000"
+            }
+        }
+        stage('package') {
             steps {
                 echo 'Deploying....'
+
             }
         }
     }
