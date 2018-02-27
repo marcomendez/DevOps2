@@ -26,7 +26,7 @@ pipeline {
         }
       }
     }
-	stage('Code-Inspection') {
+	stage('CodeQuality') {
       steps {
         echo 'Inspecting code..'
         sh './gradlew sonarqube -Dsonar.host.url=http://sonarqube:9000'
