@@ -7,14 +7,6 @@ pipeline {
                 echo 'Building..'
 				sh './gradlew clean build'
 
-        sh 'bundle install'
-
-        // build and run tests with coverage
-        sh 'bundle exec rake build spec'
-
-        // Archive the built artifacts
-        archive includes: 'pkg/*.gem'
-
         publishHTML target: [
             allowMissing: false,
             alwaysLinkToLastBuild: false,
