@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  jenkins_server:
+    image: "registry.fundacion-jala.local/devops/jenkinsci/blueocean:1.4.2"
+    ports:
+      - "8080:8080"
+
+  gocd_server:
+    image: "registry.fundacion-jala.local/devops/gocd/gocd-server:v18.1.0"
+    ports:
+      - "8153:8153"
+      - "8154:8154"
+    links:
+      - gocd_agent
+
+  gocd_agent:
+    image: "registry.fundacion-jala.local/devops/gocd/gocd-agent-alpine-3.7:v18.1.0"
+    environment:
+      - GO_SERVER_URL=https://gocd_server:8154/go
+    volumes:
+      - ./godata:/godata
+      - ./go:/home/go
+
+  sonarqube:
+    image: "registry.fundacion-jala.local/devops/sonarqube:6.7.1-alpine"
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+    links:
+      - gocd_agent
+
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: 1450
+      
