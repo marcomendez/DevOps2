@@ -30,8 +30,6 @@ pipeline {
         }
         stage('publish reports') {
         steps {
-            unstash 'source'
-
             script {
                 sh 'ls target/jmeter/reports > listFiles.txt'
                 def files = readFile("listFiles.txt").split("\\r?\\n");
