@@ -4,29 +4,17 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-               sh "gradle clean build"
                 echo 'Building..'
             }
         }
         stage('Test') {
             steps {
-                sh "gradle clean check"
                 echo 'Testing..'
-
             }
         }
-        stage('CodeQuality') {
+        stage('Deploy') {
             steps {
-                echo 'Testing..'
-                sh "sonarqube
--Dsonar.host.url=http://sonarqube:9000"
-            }
-        }
-        stage('package') {
-            steps {
-                sh "clean war"
                 echo 'Deploying....'
-
             }
         }
     }
