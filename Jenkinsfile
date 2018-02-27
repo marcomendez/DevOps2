@@ -45,6 +45,7 @@ pipeline {
                 // build
                 sh 'bundle exec rake build'
               }
+              }
 
               post {
                 success {
@@ -52,11 +53,12 @@ pipeline {
                   archive includes: 'pkg/*.gem'
                 }
               }
-            }
+
             stage ('Test2') {
               steps {
                 // run tests with coverage
                 sh 'bundle exec rake spec'
+              }
               }
 
               post {
@@ -71,8 +73,8 @@ pipeline {
                       reportName: 'RCov Report'
                     ]
                 }
-              }
-            }
+
+
           }
           post {
             always {
@@ -82,5 +84,5 @@ pipeline {
 
 
 
-    }
+    
 }
