@@ -1,0 +1,61 @@
+<pipeline name="web-app-mm2">
+    <materials>
+      <git url="git@github.com:marcomendez/MM.git" />
+    </materials>
+    <stage name="Build">
+      <jobs>
+        <job name="build">
+          <tasks>
+            <exec command="./gradlew">
+              <arg>clean</arg>
+              <arg>assemble</arg>
+            </exec>
+          </tasks>
+        </job>
+      </jobs>
+    </stage>
+    <stage name="Test">
+      <jobs>
+        <job name="unitTest">
+          <tasks>
+            <exec command="./gradlew">
+              <arg>clean</arg>
+              <arg>check</arg>
+            </exec>
+          </tasks>
+          <artifacts>
+            <artifact src="build/reports/tests/test" dest="report" />
+            <test src="build/test-results/test" dest="tests" />
+          </artifacts>
+        </job>
+      </jobs>
+    </stage>
+    <stage name="package">
+      <jobs>
+        <job name="war">
+          <tasks>
+            <exec command="./gradlew">
+              <arg>clean</arg>
+              <arg>war</arg>
+            </exec>
+          </tasks>
+          <artifacts>
+            <artifact src="build/libs/*.war" dest="webApp" />
+          </artifacts>
+        </job>
+      </jobs>
+    </stage>
+    <stage name="CodeQuality">
+      <jobs>
+        <job name="sonar">
+          <tasks>
+            <exec command="./gradlew">
+              <arg>sonarqube</arg>
+              <arg>-Dsonar.host.url=http://sonarqube:9000</arg>
+            </exec>
+          </tasks>
+        </job>
+      </jobs>
+    </stage>
+  </pipeline>
+</pipelines>
